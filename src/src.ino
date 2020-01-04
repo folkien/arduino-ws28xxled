@@ -3,11 +3,8 @@
  #include <avr/power.h> // Required for 16 MHz Adafruit Trinket
 #endif
 #include "protocol.h"
+#include "version.h"
 
-/// program version
-#define VERSION "arduino-ws28xxled 0.1\n"
-/// program version
-#define AUTHOR "spasz\n"
 ///
 #define LED_DELAY 25 // Time (in milliseconds) to pause between pixels
 /// control pin
@@ -16,7 +13,7 @@
 #define NUMPIXELS 50
 /// Create driver
 Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
-  
+
 // Communication section
 // ------------------------------------
 

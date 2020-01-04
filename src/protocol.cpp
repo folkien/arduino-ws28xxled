@@ -1,6 +1,7 @@
 #include "protocol.h"
 #include "Arduino.h"
 #include <string.h>
+#include "version.h"
 
 /// macro of array sizeof
 #define array_sizeof(arr)     (sizeof(arr) / sizeof((arr)[0]))
@@ -11,6 +12,11 @@
 /// function pointer
 typedef void (*pFun)(const char *);
 
+
+/// tx buffer size
+constexpr static uint32_t txBufferSize = 64;
+/// tx buffer
+char txBuffer[txBufferSize];
 
 /// str names of commands
 static const char * commands_str[] =
@@ -104,15 +110,31 @@ void PowerOn(const char *ptr)
 
 void SetColor(const char *ptr)
 {
-    debug_trace("Set Color[]");
-    debug_trace(ptr);
-    debug_trace("\n");
+    uint8_t red = 0;
+    uint8_t green = 0;
+    uint8_t blue = 0;
+    uint16_t position = 0;
 
+    /// parse position
+    sscanf(ptr,"%04u",&position);
+    /// parse color
+    sscanf(ptr,"%02x%02x%02x",&red, &green, &blue);
+
+    sprintf(txBuffer,"SetColor to (%u,%u,%u) at %u.\n",red,green,blue,position);
+    debug_trace(txBuffer);
 }
 
 void SetColorAll(const char *ptr)
 {
+    uint8_t red = 0;
+    uint8_t green = 0;
+    uint8_t blue = 0;
 
+    /// parse color
+    sscanf(ptr,"%02x%02x%02x",&red, &green, &blue);
+
+    sprintf(txBuffer,"SetColorAll to (%u,%u,%u) at %u.\n",red,green,blue);
+    debug_trace(txBuffer);
 }
 
 void Help(const char *ptr)
@@ -128,4 +150,6 @@ void Help(const char *ptr)
 
 void Version(const char *ptr)
 {
+  Serial.write(VERSION);
+  Serial.write(AUTHOR);
 }

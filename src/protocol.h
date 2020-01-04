@@ -11,11 +11,12 @@ class Protocol
 
     private:
         /// rx buffer size
-        constexpr static uint32_t rxBufferSize = 256;
+        constexpr static uint32_t rxBufferSize = 64;
         /// rx buffer
         char m_rxBuffer[rxBufferSize];
         /// rx buffer position
         uint32_t m_rxPos = 0;
+
 
         /// Parse rx buffer
         void Parse();
