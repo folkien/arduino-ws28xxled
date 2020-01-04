@@ -2,9 +2,12 @@
 #ifdef __AVR__
  #include <avr/power.h> // Required for 16 MHz Adafruit Trinket
 #endif
+#include "protocol.h"
 
 /// program version
-#define VERSION "arduino-ws28xxled 0.1"
+#define VERSION "arduino-ws28xxled 0.1\n"
+/// program version
+#define AUTHOR "spasz\n"
 ///
 #define LED_DELAY 25 // Time (in milliseconds) to pause between pixels
 /// control pin
@@ -17,6 +20,9 @@ Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 // Communication section
 // ------------------------------------
 
+// Create protocol object
+static Protocol protocol;
+
 void CommunicationInit()
 {
   Serial.begin(9600);
@@ -24,13 +30,16 @@ void CommunicationInit()
     ; // wait for serial port to connect. Needed for native USB port only
   }  
   Serial.write(VERSION);
+  Serial.write(AUTHOR);
 }
 
 void CommunicationLoop()
 {
- char readByte = 0;
-  if (Serial.available() > 0) {
+  char readByte = 0;
+  while (Serial.available() > 0) 
+  {
     readByte = Serial.read();
+    protocol.Receive(readByte);
   }
 }
 
