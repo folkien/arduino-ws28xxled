@@ -24,8 +24,8 @@ static const char * commands_str[] =
 {
     "power off",
     "power on",
-    "set color",
     "set colorall",
+    "set color",
     "help",
     "version",
 };
@@ -33,8 +33,8 @@ static const char * commands_str[] =
 /// protocol functions declaration
 static void PowerOff(const char *);
 static void PowerOn(const char *);
-static void SetColor(const char *);
 static void SetColorAll(const char *);
+static void SetColor(const char *);
 static void Help(const char *);
 static void Version(const char *);
 
@@ -43,8 +43,8 @@ static pFun commands_funs[] =
 {
     &PowerOff,
     &PowerOn,
-    &SetColor,
     &SetColorAll,
+    &SetColor,
     &Help,
     &Version,
 };
@@ -116,10 +116,8 @@ void SetColor(const char *ptr)
     uint8_t blue = 0;
     uint16_t position = 0;
 
-    /// parse position
-    sscanf(ptr,"%04u",&position);
     /// parse color
-    sscanf(ptr,"%02x%02x%02x",&red, &green, &blue);
+    sscanf(ptr,"%u %02x%02x%02x",&position, &red, &green, &blue);
 
     sprintf(txBuffer,"SetColor to (%u,%u,%u) at %u.\n",red,green,blue,position);
     debug_trace(txBuffer);
@@ -135,7 +133,7 @@ void SetColorAll(const char *ptr)
     /// parse color
     sscanf(ptr,"%02x%02x%02x",&red, &green, &blue);
 
-    sprintf(txBuffer,"SetColorAll to (%u,%u,%u) at %u.\n",red,green,blue);
+    sprintf(txBuffer,"SetColorAll to (%u,%u,%u).\n",red,green,blue);
     debug_trace(txBuffer);
     Led::GetInstance().SetColorAll(red,green,blue);
 }
