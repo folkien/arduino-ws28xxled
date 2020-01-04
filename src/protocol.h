@@ -19,5 +19,7 @@ class Protocol
 
         /// Parse rx buffer
         void Parse();
+        ///
+        bool StartsWith(const char* str1, const char* str2);
 };
 

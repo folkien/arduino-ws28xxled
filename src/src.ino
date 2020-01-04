@@ -16,7 +16,7 @@
 #define NUMPIXELS 50
 /// Create driver
 Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
-
+  
 // Communication section
 // ------------------------------------
 
