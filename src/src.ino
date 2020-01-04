@@ -2,7 +2,6 @@
 #include "protocol.h"
 #include "version.h"
 
-Led led;
 
 // Communication section
 // ------------------------------------
@@ -34,11 +33,11 @@ void CommunicationLoop()
 
 
 void setup() {
-  led.Init();
+  Led::GetInstance().Init();
+  Led::GetInstance().Refresh();
   CommunicationInit();
 }
 
 void loop() {
   CommunicationLoop();
-  led.Loop();
 }

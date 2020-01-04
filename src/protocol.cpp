@@ -2,6 +2,7 @@
 #include "Arduino.h"
 #include <string.h>
 #include "version.h"
+#include "led.h"
 
 /// macro of array sizeof
 #define array_sizeof(arr)     (sizeof(arr) / sizeof((arr)[0]))
@@ -122,6 +123,7 @@ void SetColor(const char *ptr)
 
     sprintf(txBuffer,"SetColor to (%u,%u,%u) at %u.\n",red,green,blue,position);
     debug_trace(txBuffer);
+    Led::GetInstance().SetColor(position,red,green,blue);
 }
 
 void SetColorAll(const char *ptr)
@@ -135,6 +137,7 @@ void SetColorAll(const char *ptr)
 
     sprintf(txBuffer,"SetColorAll to (%u,%u,%u) at %u.\n",red,green,blue);
     debug_trace(txBuffer);
+    Led::GetInstance().SetColorAll(red,green,blue);
 }
 
 void Help(const char *ptr)

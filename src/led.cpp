@@ -1,5 +1,6 @@
 #include "led.h"
 
+
 void Led::Init()
 {
   // These lines are specifically to support the Adafruit Trinket 5V 16 MHz.
@@ -13,17 +14,31 @@ void Led::Init()
   isChanged = true;
 }
 
-void Led::Loop()
+void Led::Refresh()
 {
   if (isChanged == true)
   {
       isChanged = false;
-      for(int i=0; i<LED_COUNT; ++i)
-      {
-        m_pixels.setPixelColor(i, m_pixels.Color(colorRed, colorGreen, colorBlue));
-        m_pixels.show();   // Send the updated pixel colors to the hardware.
-        delay(LED_DELAY);
-      }
+      SetColorAll(colorRed,colorGreen,colorBlue);
   }
+}
 
+void Led::SetColor(uint16_t position, uint8_t red, uint8_t green, uint8_t blue)
+{
+    m_pixels.setPixelColor(position, m_pixels.Color(red, green, blue));
+    m_pixels.show();
+}
+
+void Led::SetColorAll(uint8_t red, uint8_t green, uint8_t blue)
+{
+  colorRed=red;
+  colorGreen=green;
+  colorBlue=blue;
+
+  for(int i=0; i<LED_COUNT; ++i)
+  {
+    m_pixels.setPixelColor(i, m_pixels.Color(colorRed, colorGreen, colorBlue));
+    m_pixels.show();   // Send the updated pixel colors to the hardware.
+    delay(LED_DELAY);
+  }
 }
