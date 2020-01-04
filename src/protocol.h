@@ -1,6 +1,5 @@
 #include <stdint.h>
 
-
 class Protocol
 {
     public:
@@ -21,3 +20,4 @@ class Protocol
         /// Parse rx buffer
         void Parse();
 };
+
