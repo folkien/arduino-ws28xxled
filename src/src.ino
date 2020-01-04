@@ -1,18 +1,8 @@
-#include <Adafruit_NeoPixel.h>
-#ifdef __AVR__
- #include <avr/power.h> // Required for 16 MHz Adafruit Trinket
-#endif
+#include "led.h"
 #include "protocol.h"
 #include "version.h"
 
-///
-#define LED_DELAY 25 // Time (in milliseconds) to pause between pixels
-/// control pin
-#define PIN        A5
-/// Number of leds
-#define NUMPIXELS 50
-/// Create driver
-Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+Led led;
 
 // Communication section
 // ------------------------------------
@@ -42,49 +32,13 @@ void CommunicationLoop()
 
 // ------------------------------------
 
-// Led section
-// ------------------------------------
-
-
-static uint8_t colorRed = 0xFF;
-static uint8_t colorGreen = 0xFF;
-static uint8_t colorBlue = 0xFF;
-static bool isChanged = false;
-
-void LedInit()
-{
-  // These lines are specifically to support the Adafruit Trinket 5V 16 MHz.
-  // Any other board, you can remove this part (but no harm leaving it):
-#if defined(__AVR_ATtiny85__) && (F_CPU == 16000000)
-  clock_prescale_set(clock_div_1);
-#endif
-  // END of Trinket-specific code.
-  pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
-  pixels.clear();
-  isChanged = true;
-}
-
-void LedLoop()
-{
-  if (isChanged == true)
-  {
-      isChanged = false;
-      for(int i=0; i<NUMPIXELS; i++) 
-      {
-        pixels.setPixelColor(i, pixels.Color(colorRed, colorGreen, colorBlue));
-        pixels.show();   // Send the updated pixel colors to the hardware.
-        delay(LED_DELAY);
-      }
-  }
-}
-// ------------------------------------
 
 void setup() {
-  LedInit();
+  led.Init();
   CommunicationInit();
 }
 
 void loop() {
   CommunicationLoop();
-  LedLoop();
+  led.Loop();
 }
